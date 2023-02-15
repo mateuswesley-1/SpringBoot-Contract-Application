@@ -15,6 +15,7 @@ public class InstallmentService {
     @Autowired
     private InstallmentRepository repository;
 
+
     public List<Installment> findAll(){
         return repository.findAll();
     }
@@ -23,5 +24,7 @@ public class InstallmentService {
         Optional<Installment> obj = repository.findById(id);
         return obj.get();
     }
+
+
 }
 

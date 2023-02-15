@@ -17,14 +17,27 @@ public class ContractService {
     @Autowired
     private ContractRepository repository;
 
-    /*
     @Autowired
     private OnlinePaymentService paymentService;
-*/
 
 
     public void processContract(Contract contract, Integer months){
-        contract.getInstallments().add(new Installment(LocalDate.now(), 1500.0, contract));
+        double basicQuota = contract.getTotalValue()/months;
+
+        for(int i = 1; i<months; i++){
+            LocalDate dueDate = contract.getDate().plusMonths(i);
+
+            // juros calculado para esse mes
+            double interest = paymentService.interest(basicQuota, i);
+
+            // juros padrao calculado em cima do valor mensal com juros mensal
+            double fee = paymentService.paymentFee(basicQuota + interest);
+
+            double quota = basicQuota + interest + fee;
+
+            contract.getInstallments().add(new Installment(dueDate, quota, contract));
+        }
+
     }
 
 

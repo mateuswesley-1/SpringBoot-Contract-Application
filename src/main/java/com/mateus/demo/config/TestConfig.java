@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.mateus.demo.entities.Contract;
 import com.mateus.demo.repositories.ContractRepository;
 import com.mateus.demo.repositories.InstallmentRepository;
+import com.mateus.demo.services.ContractService;
 
 
 @Configuration
@@ -24,12 +25,20 @@ public class TestConfig implements CommandLineRunner{
     @Autowired
     private InstallmentRepository installmentRepository;
 
+    @Autowired
+    private ContractService contractService;
+
     @Override
     public void run(String... args) throws Exception {
        Contract c1 = new Contract( LocalDate.now(), 25000.0);
        Contract c2 = new Contract( LocalDate.now(), 50000.0);
+       contractService.processContract(c1, 3);
+       contractService.processContract(c2, 4);
+
 
        ContractRepository.saveAll(Arrays.asList(c1, c2));
+       installmentRepository.saveAll(c1.getInstallments());
+       installmentRepository.saveAll(c2.getInstallments());
     }
 
 
