@@ -1,6 +1,7 @@
 package com.mateus.demo.entities;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ public class Contract {
     private Long id;
 
     @OneToMany(mappedBy = "contract")
-    private Set<Installment> installments;
+    private Set<Installment> installments = new HashSet<Installment>();
 
     private LocalDate date;
     private Double totalValue;
